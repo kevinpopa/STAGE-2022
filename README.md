@@ -13,6 +13,7 @@ bedtools unionbedg -i G1-1.bg G1-2.bg G2-1.bg G2-2.bg -header -names G1-1 G1-2 G
 ```
 
 Lancer SMART2, en supposant que l'environnement virtuel est bien configuré :
+Dans ce cas-ci, on suppose que l'environnement virtuel se trouve à la racine pour venir l'activer. L'option -AD est la différence de méthylation moyenne absolue entre le groupe de cas et le groupe de contrôle, ajustée à 10%.
 
 ```bash
 module load StdEnv/2018.3 python/2.7 scipy-stack
