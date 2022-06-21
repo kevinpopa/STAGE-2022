@@ -2,7 +2,7 @@
 
 Pour préparer les fichier .bg :
 
-1) Copier les fichiers smart2_cov.py et matrix.sh dans le dossier avec les fichiers .cov.gz bien renommés.
+1) Copier les fichiers **smart2_cov.py** et **matrix.sh** dans le dossier avec les fichiers .cov.gz bien renommés.
 2) Lancer matrix.sh : le script va créer un dossier ./matrix avec tous les fichiers .bg dedans. Effectuer la commande ci-dessous avec les fichiers résultants.
 
 Voici un exemple :
