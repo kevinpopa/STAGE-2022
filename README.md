@@ -9,15 +9,27 @@ Pour préparer les fichier .bg :
 
 ```bash
 module load bedtools/2.30.0
-bedtools unionbedg -i G1-1.bg G1-2.bg G2-1.bg G2-2.bg -header -names G1-1 G1-2 G2-1 G2-2 -filler - > MethylMatrix.txt &
+bedtools unionbedg -i G1-1.bg G1-2.bg G2-1.bg G2-2.bg -header -names G1_1 G1_2 G2_1 G2_2 -filler - > MethylMatrix.txt &
 ```
+
+<details>
+  <summary>Exemple de commandes </summary>
+  
+  ### Pipeline du labo + Genpipes
+  
+  ```bash
+module load bedtools/2.30.0
+bedtools unionbedg -i CT-M16-1.bg CT-M16-2.bg CT-M16-3.bg CT-M16-4.bg HFD-M16-1.bg HFD-M16-2.bg HFD-M16-3.bg HFD-M16-4.bg CT-F16-1.bg CT-F16-2.bg CT-F16-3.bg HFD-F16-1.bg HFD-F16-2.bg HFD-F16-3.bg CT-M18-1.bg CT-M18-2.bg CT-M18-3.bg CT-M18-4.bg -header -names CT-M16_1 CT-M16_2 CT-M16_3 CT-M16_4 HFD-M16_1 HFD-M16_2 HFD-M16_3 HFD-M16_4 CT-F16_1 CT-F16_2 CT-F16_3 HFD-F16_1 HFD-F16_2 HFD-F16_3 CT-M18_1 CT-M18_2 CT-M18_3 CT-M18-4 -filler - > MethylMatrix.txt &
+bedtools unionbedg -i CT-M16GP-1.bg CT-M16GP-2.bg CT-M16GP-3.bg CT-M16GP-4.bg HFD-M16GP-1.bg HFD-M16GP-2.bg HFD-M16GP-3.bg HFD-M16GP-4.bg CT-F16GP-1.bg CT-F16GP-2.bg CT-F16GP-3.bg HFD-F16GP-1.bg HFD-F16GP-2.bg HFD-F16GP-3.bg -header -names CT-M16GP_1 CT-M16GP_2 CT-M16GP_3 CT-M16GP_4 HFD-M16GP_1 HFD-M16GP_2 HFD-M16GP_3 HFD-M16GP_4 CT-F16GP_1 CT-F16GP_2 CT-F16GP_3 HFD-F16GP_1 HFD-F16GP_2 HFD-F16GP_3 -filler - > MethylMatrix.txt &
+```
+</details>
 
 Lancer SMART2, en supposant que l'environnement virtuel est bien configuré :
 
 ```bash
 module load StdEnv/2018.3 python/2.7 scipy-stack
 source ~/ENV/bin/activate
-SMART (Matrice) -t DeNovoDMR -o ./(dossier output) -AD 0.10
+SMART (Matrice) -t DeNovoDMR -o ./(dossier output) -AD 0.10 -PC 1
 ```
 
-Dans ce cas-ci, on suppose que l'environnement virtuel se trouve à la racine pour venir l'activer. L'option -AD est la différence de méthylation moyenne absolue entre le groupe de cas et le groupe de contrôle, ajustée à 10%.
+Dans ce cas-ci, on suppose que l'environnement virtuel se trouve à la racine pour venir l'activer. L'option -AD est la différence de méthylation moyenne absolue entre le groupe de cas et le groupe de contrôle, ajustée à 10%. L'option -PC est la **p-value** auquels les DMR des case-controls sont identifiés.
