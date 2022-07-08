@@ -7,6 +7,8 @@ Pour préparer les fichier .bg :
 1) Copier les fichiers **smart2_cov.py** et **matrix.sh** dans le dossier avec les fichiers .cov.gz bien renommés.
 2) Lancer matrix.sh : le script va créer un dossier ./matrix avec tous les fichiers .bg dedans. Effectuer la commande, montrée en exemple ci-dessous, avec les fichiers résultants.
 
+_Note : Bedtools reconnait les réplicats de groupes que s'ils sont nommés avec des barres en bas._ 
+
 ```bash
 module load bedtools/2.30.0
 bedtools unionbedg -i G1-1.bg G1-2.bg G2-1.bg G2-2.bg -header -names G1_1 G1_2 G2_1 G2_2 -filler - > MethylMatrix.txt &
@@ -54,7 +56,7 @@ dfsig <- df[df$FDR <= 0.05, ]
 Finalement, on séparera ce dataframe en plusieurs sous-dataframes pour les différentes conditions de cas-contrôle et l'état de la méthylation. Ces étapes pourraient être simplifiées et combinées pour moins de ligne de code, mais voici la version longue. 
 
 ```R
-dfCTM_HFDM <- dfsig[dfsig$Case_Group == "CT-M16" && dfsig$Control_Group == "HFD-M16", ]
+dfCTM_HFDM <- dfsig[dfsig$Case_Group == "CT-M16" & dfsig$Control_Group == "HFD-M16", ]
 dfCTM_HFDM <- dfsig[dfsig$Case_Group == "HFD-M16" & dfsig$Control_Group == "CT-M16", ]
 dfCTF_HFDF <- dfsig[dfsig$Case_Group == "HFD-F16" & dfsig$Control_Group == "CT-F16", ]
 dfCTM_CTF <- dfsig[dfsig$Case_Group == "CT-M16" & dfsig$Control_Group == "CT-F16", ]
@@ -76,5 +78,5 @@ CT18_CTF_Hypo <- dfCT18_CTF[dfCT18_CTF$Case_Status == "Hypo", ]
 Utiliser pour chacun des dataframes résultants le code suivant pour l'exporter en fichier texte. Ceci produit un fichier dans le répertoire de travail.
 
 ```R
-write.table(CT18_CTF_Hyper,"CT18_CTF_Hyper.txt",sep="\t", quote = FALSE)
+write.table(CTM_HFDM_Hyper,"CTM_HFDM_Hyper.txt", sep= "\t", quote = FALSE)
 ```
