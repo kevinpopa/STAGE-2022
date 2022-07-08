@@ -33,3 +33,48 @@ SMART (Matrice) -t DeNovoDMR -o ./(dossier output) -AD 0.10 -PC 1
 ```
 
 Dans ce cas-ci, on suppose que l'environnement virtuel se trouve à la racine pour venir l'activer. L'option -AD est la différence de méthylation moyenne absolue entre le groupe de cas et le groupe de contrôle, ajustée à 10%. L'option -PC est la **p-value** auquels les DMR des case-controls sont identifiés.
+
+Ensuite, à partir du fichier "7_DMR_Case_control.txt", qui est un tableau ayant tous les DMR identifiés avec les paramètres voulus, séparer les différents DMR pour chaque duo de cas-contrôle. Avant de créer tous les fichiers voulus, on veut effectuer une correction pour tests multiples "FDR".
+
+Ce code en R permet d'importer les données et ajouter une colonne FDR au dataframe (df). 
+
+```R
+df <- read.delim("C:/Users/Admin/Desktop/7_DMR_Case_control.txt", comment.char="#")
+p <- df$TwoSampleTtest_pvalue
+qvalue <- p.adjust(p, method = "fdr", n = length(p))
+df['FDR'] <- qvalue
+```
+
+Ensuite, on veut que seulement les DMR ayant une q-value inférieure ou égale à 0.05. 
+
+```R
+dfsig <- df[df$FDR <= 0.05, ]
+```
+
+Finalement, on séparera ce dataframe en plusieurs sous-dataframes pour les différentes conditions de cas-contrôle et l'état de la méthylation. Ces étapes pourraient être simplifiées et combinées pour moins de ligne de code, mais voici la version longue. 
+
+```R
+dfCTM_HFDM <- dfsig[dfsig$Case_Group == "CT-M16" && dfsig$Control_Group == "HFD-M16", ]
+dfCTM_HFDM <- dfsig[dfsig$Case_Group == "HFD-M16" & dfsig$Control_Group == "CT-M16", ]
+dfCTF_HFDF <- dfsig[dfsig$Case_Group == "HFD-F16" & dfsig$Control_Group == "CT-F16", ]
+dfCTM_CTF <- dfsig[dfsig$Case_Group == "CT-M16" & dfsig$Control_Group == "CT-F16", ]
+dfCT18_CTM <- dfsig[dfsig$Case_Group == "CT-M18" & dfsig$Control_Group == "CT-M16", ]
+dfCT18_CTF <- dfsig[dfsig$Case_Group == "CT-M18" & dfsig$Control_Group == "CT-F16", ]
+
+CTM_HFDM_Hyper <- dfCTM_HFDM[dfCTM_HFDM$Case_Status == "Hyper", ]
+CTM_HFDM_Hypo <- dfCTM_HFDM[dfCTM_HFDM$Case_Status == "Hypo", ]
+CTF_HFDF_Hyper <- dfCTF_HFDF[dfCTF_HFDF$Case_Status == "Hyper", ]
+CTF_HFDF_Hypo <- dfCTF_HFDF[dfCTF_HFDF$Case_Status == "Hypo", ]
+CTM_CTF_Hyper <- dfCTM_CTF[dfCTM_CTF$Case_Status == "Hyper", ]
+CTM_CTF_Hypo <- dfCTM_CTF[dfCTM_CTF$Case_Status == "Hypo", ]
+CT18_CTM_Hyper <- dfCT18_CTM[dfCT18_CTM$Case_Status == "Hyper", ]
+CT18_CTM_Hypo <- dfCT18_CTM[dfCT18_CTM$Case_Status == "Hypo", ]
+CT18_CTF_Hyper <- dfCT18_CTF[dfCT18_CTF$Case_Status == "Hyper", ]
+CT18_CTF_Hypo <- dfCT18_CTF[dfCT18_CTF$Case_Status == "Hypo", ]
+```
+
+Utiliser pour chacun des dataframes résultants le code suivant pour l'exporter en fichier texte. Ceci produit un fichier dans le répertoire de travail.
+
+```R
+write.table(CT18_CTF_Hyper,"CT18_CTF_Hyper.txt",sep="\t", quote = FALSE)
+```
