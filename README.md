@@ -102,7 +102,7 @@ means_samples
  HFD.F16_1  HFD.F16_2  HFD.F16_3   CT.M18_1   CT.M18_2   CT.M18_3   CT.M18_4 
 0.04584711 0.04148280 0.03915652 0.03741029 0.02782513 0.05099672 0.04286993 
 
-# On effectue un t-test pour voir si la différence des moyennes de méthylation des deux groupes est significativement différente. 
+# On effectue un t-test pour voir si la différence des moyennes de méthylation des deux groupes est significativement différente. Ici, en exemple, on vérifie si la moyenne de méthylation des témoins mâles (1 à 4) est différente des traitement HFD mâles (5 à 8). Comme vu ci-dessus, une p-value de 0.3235 est non significative. 
 t.test(means_samples[1:4], means_samples[5:8], alternative = "two.sided", var.equal = FALSE)
 
 	Welch Two Sample t-test
@@ -115,7 +115,44 @@ alternative hypothesis: true difference in means is not equal to 0
 sample estimates:
 mean of x mean of y 
 0.1464079 0.1248394 
+```
 
+<details>
+  <summary>Les deux autres t-test</summary>
+  
+Témoins femelles (9 à 11) vs. Traitement HFD femelles (12 à 14) & Témoins mâles (1 à 4) vs. Témoins femelles (9 à 11)
+  
+  ```R
+> t.test(means_samples[9:11], means_samples[12:14], alternative = "two.sided", var.equal = FALSE)
+
+	Welch Two Sample t-test
+
+data:  means_samples[9:11] and means_samples[12:14]
+t = 0.61127, df = 2.0584, p-value = 0.6017
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.05844882  0.07842827
+sample estimates:
+ mean of x  mean of y 
+0.05215187 0.04216214 
+
+> t.test(means_samples[1:4], means_samples[9:11], alternative = "two.sided", var.equal = FALSE)
+
+	Welch Two Sample t-test
+
+data:  means_samples[1:4] and means_samples[9:11]
+t = 4.2281, df = 4.6726, p-value = 0.009584
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.03572113 0.15279093
+sample estimates:
+ mean of x  mean of y 
+0.14640790 0.05215187
+```
+
+</details>
+
+```R
 #On peut storer les moyennes des groupes dans des variables 
 CTM_mean <- mean(means_samples[1:4])
 HFDM_mean <- mean(means_samples[5:8])
