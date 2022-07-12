@@ -102,7 +102,9 @@ means_samples
  HFD.F16_1  HFD.F16_2  HFD.F16_3   CT.M18_1   CT.M18_2   CT.M18_3   CT.M18_4 
 0.04584711 0.04148280 0.03915652 0.03741029 0.02782513 0.05099672 0.04286993 
 
-# On effectue un t-test pour voir si la différence des moyennes de méthylation des deux groupes est significativement différente. Ici, en exemple, on vérifie si la moyenne de méthylation des témoins mâles (1 à 4) est différente des traitement HFD mâles (5 à 8). Comme vu ci-dessus, une p-value de 0.3235 est non significative. 
+# On effectue un t-test pour voir si la différence des moyennes de méthylation des deux groupes est significativement différente. 
+# Ici, en exemple, on vérifie si la moyenne de méthylation des témoins mâles (1 à 4) est différente des traitement HFD mâles (5 à 8). 
+# Comme vu ci-dessus, une p-value de 0.3235 est non significative. 
 t.test(means_samples[1:4], means_samples[5:8], alternative = "two.sided", var.equal = FALSE)
 
 	Welch Two Sample t-test
