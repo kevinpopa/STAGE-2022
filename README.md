@@ -17,7 +17,7 @@ bedtools unionbedg -i G1-1.bg G1-2.bg G2-1.bg G2-2.bg -header -names G1_1 G1_2 G
 <details>
   <summary>Exemple complet</summary>
   
-### Pipeline du labo + Genpipes
+Pipeline du labo + Genpipes
   
   ```bash
 module load bedtools/2.30.0
@@ -79,4 +79,30 @@ Utiliser pour chacun des dataframes résultants le code suivant pour l'exporter 
 
 ```R
 write.table(CTM_HFDM_Hyper,"CTM_HFDM_Hyper.txt", sep= "\t", quote = FALSE)
+```
+
+## Analyse des segments - Taux de méthylation
+À partir du fichier 3_MergedSegment_Methylation fourni par SMART2, on veut déterminer la méthylation moyenne de chaque réplicat.
+
+```R
+segment_file <- read.delim("C:/Users/Admin/Desktop/3_MergedSegment_Methylation.txt", comment.char="#")
+sample_methylation <- segment_file["Sample_Methyl.CT.M16_1.CT.M16_2.CT.M16_3.CT.M16_4.HFD.M16_1.HFD.M16_2.HFD.M16_3.HFD.M16_4.CT.F16_1.CT.F16_2.CT.F16_3.HFD.F16_1.HFD.F16_2.HFD.F16_3.CT.M18_1.CT.M18_2.CT.M18_3.CT.M18_4"]
+write.table(sample_methylation, file = "sample_methylation.txt", sep = "\t", quote = FALSE, row.names = FALSE)
+sample_meth <- read.csv("~/Segment Methylation/sample_methylation.txt")
+means_samples <- colMeans(as.matrix(sapply(sample_meth, as.numeric)), na.rm = TRUE)
+t.test(means_samples[1:4], means_samples[5:8], alternative = "two.sided", var.equal = FALSE)
+t.test(means_samples[9:11], means_samples[12:14], alternative = "two.sided", var.equal = FALSE)
+t.test(means_samples[1:4], means_samples[9:11], alternative = "two.sided", var.equal = FALSE)
+
+CTM_mean <- mean(means_samples[1:4])
+HFDM_mean <- mean(means_samples[5:8])
+CTF_mean <- mean(means_samples[9:11])
+HFDF_mean <- mean(means_samples[12:14])
+
+tab_means <- matrix(c(CTM_mean, CTF_mean, HFDM_mean, HFDF_mean), ncol = 4, byrow = TRUE)
+rownames(tab_means) <- c("mean")
+colnames(tab_means) <- c("Témoin mâle (n=4)", "Témoin femelle (n=3)", "HFD mâle (n=4)", "HFD femelle (n=3)")
+tab_means <- as.table(tab_means)
+barplot(tab_means)
+
 ```
