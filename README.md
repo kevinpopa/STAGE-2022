@@ -86,19 +86,43 @@ write.table(CTM_HFDM_Hyper,"CTM_HFDM_Hyper.txt", sep= "\t", quote = FALSE)
 
 ```R
 segment_file <- read.delim("C:/Users/Admin/Desktop/3_MergedSegment_Methylation.txt", comment.char="#")
+# On veut seulement que la dernière colonne
 sample_methylation <- segment_file["Sample_Methyl.CT.M16_1.CT.M16_2.CT.M16_3.CT.M16_4.HFD.M16_1.HFD.M16_2.HFD.M16_3.HFD.M16_4.CT.F16_1.CT.F16_2.CT.F16_3.HFD.F16_1.HFD.F16_2.HFD.F16_3.CT.M18_1.CT.M18_2.CT.M18_3.CT.M18_4"]
+
+# Ensuite, on extrait cette dernière colonne vers un fichier texte, on re-importe les données sous forme de fichier csv 
 write.table(sample_methylation, file = "sample_methylation.txt", sep = "\t", quote = FALSE, row.names = FALSE)
 sample_meth <- read.csv("~/Segment Methylation/sample_methylation.txt")
-means_samples <- colMeans(as.matrix(sapply(sample_meth, as.numeric)), na.rm = TRUE)
-t.test(means_samples[1:4], means_samples[5:8], alternative = "two.sided", var.equal = FALSE)
-t.test(means_samples[9:11], means_samples[12:14], alternative = "two.sided", var.equal = FALSE)
-t.test(means_samples[1:4], means_samples[9:11], alternative = "two.sided", var.equal = FALSE)
 
+# On s'intéresse à la moyennne de chaque replicat (colonne de simple_meth)
+means_samples <- colMeans(as.matrix(sapply(sample_meth, as.numeric)), na.rm = TRUE)
+means_samples
+
+ CT.M16_1   CT.M16_2   CT.M16_3   CT.M16_4  HFD.M16_1  HFD.M16_2  HFD.M16_3  HFD.M16_4   CT.F16_1   CT.F16_2   CT.F16_3 
+0.18669140 0.15081660 0.13311596 0.11500765 0.10781484 0.09872396 0.15331439 0.13950453 0.08410354 0.04107823 0.03127384 
+ HFD.F16_1  HFD.F16_2  HFD.F16_3   CT.M18_1   CT.M18_2   CT.M18_3   CT.M18_4 
+0.04584711 0.04148280 0.03915652 0.03741029 0.02782513 0.05099672 0.04286993 
+
+# On effectue un t-test pour voir si la différence des moyennes de méthylation des deux groupes est significativement différente. 
+t.test(means_samples[1:4], means_samples[5:8], alternative = "two.sided", var.equal = FALSE)
+
+	Welch Two Sample t-test
+
+data:  means_samples[1:4] and means_samples[5:8]
+t = 1.0781, df = 5.8352, p-value = 0.3235
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.02772006  0.07085701
+sample estimates:
+mean of x mean of y 
+0.1464079 0.1248394 
+
+#On peut storer les moyennes des groupes dans des variables 
 CTM_mean <- mean(means_samples[1:4])
 HFDM_mean <- mean(means_samples[5:8])
 CTF_mean <- mean(means_samples[9:11])
 HFDF_mean <- mean(means_samples[12:14])
 
+#On produit un barplot. Pour arriver à cela, on crée une table ayant pour colonne chaque échantillon. 
 tab_means <- matrix(c(CTM_mean, CTF_mean, HFDM_mean, HFDF_mean), ncol = 4, byrow = TRUE)
 rownames(tab_means) <- c("mean")
 colnames(tab_means) <- c("Témoin mâle (n=4)", "Témoin femelle (n=3)", "HFD mâle (n=4)", "HFD femelle (n=3)")
