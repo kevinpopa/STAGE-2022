@@ -2,6 +2,8 @@
 
 ## NOTE : TOUTES LES OPÉRATIONS SONT EFFECTUÉES SUR LES CLUSTERS CALCUL QUÉBEC
 
+## SMART2 - Conversion des cov.gz vers des bg + SMART
+
 Pour préparer les fichier .bg :
 
 1) Copier les fichiers **smart2_cov.py** et **matrix.sh** dans le dossier avec les fichiers .cov.gz bien renommés.
