@@ -11,7 +11,7 @@ COVERAGE=10
 # Loop that looks for all the .cov.gz files. Runs the smart2_cov.py script on it with the desired coverage.
 # Then sorts the file, changes the extension and moves it in the ./matrix directory.
 for file in *.cov.gz; do
-  python3 smart2_cov.py "$file" $COVERAGE
+  python3 ~/bin/smart2_cov.py "$file" $COVERAGE
   sort -k1,1 -V -s ${COVERAGE}*.txt > "${file%??????}"bg
   mv "${file%??????}"bg matrix
   mv ${COVERAGE}*.txt coverage_files
