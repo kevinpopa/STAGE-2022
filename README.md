@@ -205,8 +205,7 @@ write.table(df_1, args[2], sep = "\t", quote = FALSE, row.names = FALSE, col.nam
 Installation de HOMER, installer le fichier configureHomer.pl (http://homer.ucsd.edu/homer/configureHomer.pl) et le mettre dans le répertoire d'installation.
 
 ```bash
-perl configureHomer.pl -install
-perl homer/configureHomer.pl -install rn6
+perl configureHomer.pl -install rn6
 ```
 
 ```bash
