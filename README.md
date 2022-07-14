@@ -166,6 +166,6 @@ tab_means <- matrix(c(CTM_mean, CTF_mean, HFDM_mean, HFDF_mean), ncol = 4, byrow
 rownames(tab_means) <- c("mean")
 colnames(tab_means) <- c("Témoin mâle (n=4)", "Témoin femelle (n=3)", "HFD mâle (n=4)", "HFD femelle (n=3)")
 tab_means <- as.table(tab_means)
-barplot(tab_means)
+barplot(tab_means, ylim = c(0,1))
 
 ```
