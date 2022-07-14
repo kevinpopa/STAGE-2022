@@ -5,7 +5,7 @@ Si non créé, créer un dossier bin à la racine.
 mkdir ~/bin
 ```
 
-Rajouter les fichiers dans le dossier scripts de ce github dans ~/bin.
+Rajouter les fichiers dans le dossier scripts de ce Github (STAGE-2022/scripts/) dans ~/bin.
 
 Donnez les permissions de lecture et exécution au fichier pour tout le monde (si le fichier n'est pas final, rajouter l'écriture).
 
