@@ -1,4 +1,4 @@
-Pour avoir accès aux fichiers de scripts partout dans linux, on va les déplacer dans un endroit dans lequel linux reconnait automatiquement les chemin vers ces fichiers. 
+Pour avoir accès aux fichiers de scripts partout dans Linux, on va les déplacer dans un endroit dans lequel Linux reconnait automatiquement les chemin vers ces fichiers. 
 Si non créé, créer un dossier bin à la racine.
 
 ```bash
