@@ -7,7 +7,8 @@
 Pour préparer les fichier .bg :
 
 1) Copier les fichiers **smart2_cov.py** et **matrix.sh** dans le dossier avec les fichiers .cov.gz bien renommés.
-2) Lancer matrix.sh : le script va créer un dossier ./matrix avec tous les fichiers .bg dedans. Effectuer la commande, montrée en exemple ci-dessous, avec les fichiers résultants.
+   **OU EFFECTUER LES ÉTAPES DANS InstallScripts.md**
+3) Lancer matrix.sh : le script va créer un dossier ./matrix avec tous les fichiers .bg dedans. Effectuer la commande, montrée en exemple ci-dessous, avec les fichiers résultants.
 
 _Note : Bedtools reconnait les réplicats de groupes que s'ils sont nommés avec des barres en bas._ 
 
