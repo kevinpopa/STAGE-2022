@@ -180,6 +180,7 @@ module load r/4.1.2
 Rscript script_prepareHomer.R (fichier input) (fichier output : optionnel)
 ```
 
+(Fichier script_prepareHomer.R)
 ```R
 args = commandArgs(trailingOnly = TRUE)
 
