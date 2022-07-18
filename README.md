@@ -209,5 +209,5 @@ perl configureHomer.pl -install rn6
 ```
 
 ```bash
-annotatePeaks.pl CTM_HFDM_Hyper.HOMER.txt rn6 > CTM_HFDM_Hyper.HOMER_annotated.txt
+annotatePeaks.pl CTM_HFDM_Hyper.HOMER.txt rn6 -annStats CTM_HFDM_Hyper.stats.txt > CTM_HFDM_Hyper.HOMER_annotated.txt
 ```
