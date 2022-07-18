@@ -206,6 +206,8 @@ Installation de HOMER, installer le fichier configureHomer.pl (http://homer.ucsd
 
 ```bash
 perl configureHomer.pl -install rn6
+
+# Pour que Homer soit toujours acessible (après installation au home). Ajouter la prochaine ligne au fichier ~/.bash_profile : PATH=$PATH:~/homer/bin/
 ```
 
 ```bash
