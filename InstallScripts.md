@@ -15,7 +15,7 @@ Rajouter les fichiers dans le dossier scripts de ce Github (STAGE-2022/scripts/)
 │   └── smart2_cov.py
 ```
 
-Donnez les permissions de lecture et exécution au fichier pour tout le monde (si le fichier n'est pas final, rajouter l'écriture).  À faire surtout pour les fichiers script shell .sh, pour les rendre exécutables sans erreurs de permissions. 
+Donnez les permissions de lecture et exécution aux fichier pour tout le monde (si le fichier n'est pas final, rajouter l'écriture).  À faire surtout pour les fichiers script shell .sh, pour les rendre exécutables sans erreurs de permissions. 
 
 ```bash
 chmod ugo+rx ~/bin/matrix.sh
