@@ -186,11 +186,11 @@ Rscript script_prepareHomer.R (fichier input) (fichier output : optionnel)
 ```R
 args = commandArgs(trailingOnly = TRUE)
 
-# Check that at least the input file is specified.
+# Vérification de l'input reçu en ligne de commande.
 if (length(args)==0) {
   stop("The script input should be Rscript script_prepareHomer.R (input file : required) (output file name : optional)", call.=FALSE)
 } else if (length(args)==1) {
-  # default output file
+  # Fichier de output par défaut, ajout de HOMER.txt à la fin du fichier
   args[2] = paste(gsub('.{4}$', '', args[1]), "HOMER.txt", sep = ".")
 }
 df <- read.delim(args[1])
