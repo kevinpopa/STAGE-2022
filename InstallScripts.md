@@ -5,9 +5,17 @@ Si non créé, créer un dossier bin à la racine.
 mkdir ~/bin
 ```
 
-Rajouter les fichiers dans le dossier scripts de ce Github (STAGE-2022/scripts/) dans ~/bin.
+Rajouter les fichiers dans le dossier scripts de ce Github (STAGE-2022/scripts/) dans ~/bin. Ainsi, le fichier bin devrait ressembler à cela :
 
-Donnez les permissions de lecture et exécution au fichier pour tout le monde (si le fichier n'est pas final, rajouter l'écriture).
+```bash
+.
+├── bin
+│   ├── matrix.sh
+│   ├── script_prepareHomer.R
+│   └── smart2_cov.py
+```
+
+Donnez les permissions de lecture et exécution au fichier pour tout le monde (si le fichier n'est pas final, rajouter l'écriture).  À faire surtout pour les fichiers script shell .sh, pour les rendre exécutables sans erreurs de permissions. 
 
 ```bash
 chmod ugo+rx ~/bin/matrix.sh
@@ -18,10 +26,3 @@ Maintenant, il est possible de faire matrix.sh n'importe où sans spécifier son
 ```bash
 matrix.sh &
 ```
-
-Exemple de l'arborescence à la racine. 
-.
-├── bin
-│   ├── matrix.sh
-│   ├── script_prepareHomer.R
-│   └── smart2_cov.py
