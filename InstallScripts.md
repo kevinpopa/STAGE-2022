@@ -18,3 +18,10 @@ Maintenant, il est possible de faire matrix.sh n'importe où sans spécifier son
 ```bash
 matrix.sh &
 ```
+
+Exemple de l'arborescence à la racine. 
+.
+├── bin
+│   ├── matrix.sh
+│   ├── script_prepareHomer.R
+│   └── smart2_cov.py
