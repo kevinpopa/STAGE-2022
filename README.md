@@ -218,7 +218,7 @@ Utilisation de Homer
 annotatePeaks.pl CTM_HFDM_Hyper.HOMER.txt rn6 -annStats CTM_HFDM_Hyper.stats.txt > CTM_HFDM_Hyper.HOMER_annotated.txt
 ```
 
-Ensuite, nous voulons analyser les nouveaux fichiers "\_annotated.txt" nouvellement créés. On spécifie au début que dans le répertoire, on veut tous les fichiers qui finissent de cette façon. Seulement les annotations qui codent pour une protéine et qui sont directement reliées à un gène sont retenues. On extrait la colonne Entrez.ID de chaque dataframe et on crée une liste avec les noms appropriés pour chacun. Ultimement, on va itérer sur cette liste pour obetenir les différents GO:Term enrichis (objet créé dans R + exportation de la table vers un fichier).
+Ensuite, nous voulons analyser les nouveaux fichiers "\_annotated.txt" nouvellement créés. On spécifie au début que dans le répertoire, on veut tous les fichiers qui finissent de cette façon. Seulement les annotations qui codent pour une protéine et qui sont directement reliées à un gène sont retenues. On extrait la colonne Entrez.ID de chaque dataframe et on crée une liste avec les noms appropriés pour chacun. Ultimement, on va itérer sur cette liste pour obtenir les différents GO:Term enrichis (objet créé dans R + exportation de la table vers un fichier).
 
 Les paramètres de ClusterProfiler sont à modifier à la discrétion de l'analyse. Dans ce cas précis, certaines comparaisons de DMR n'enrichissent rien de significatif, donc les pvalueCutoff et qvalueCutoff ont été relaxés. 
 
