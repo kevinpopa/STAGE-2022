@@ -215,3 +215,58 @@ source ~/.bash_profile
 ```bash
 annotatePeaks.pl CTM_HFDM_Hyper.HOMER.txt rn6 -annStats CTM_HFDM_Hyper.stats.txt > CTM_HFDM_Hyper.HOMER_annotated.txt
 ```
+
+Ensuite, nous voulons analyser les nouveaux fichiers _annotated.txt nouvellement créés. On spécifie au début que dans le répertoire, qu'on veut tous les fichiers qui finissent de cette façon. Seulement les annotations qui codent pour une protéine et qui sont directement relié à un gène sont retenues. On extrait la colonne Entrez.ID de chaque dataframe et on crée une liste avec les noms appropriés pour chacun. Ultimement, on va itérer sur cette liste pour obetenir les différents GO:Term enrichis (objet créé dans R + exportation de la table vers un fichier) 
+
+```r
+library(org.Rn.eg.db)
+library(clusterProfiler)
+
+filenames = dir(pattern="*_annotated.txt")
+
+for( files in filenames )
+{
+  read_df <- read.delim(files)
+  
+  protein_coding <- with(read_df, grepl("protein-coding", Gene.Type, ignore.case = TRUE))
+  intergenic <- with(read_df, grepl("intergenic", Annotation, ignore.case = TRUE))
+  
+  read_df <- read_df[protein_coding & !intergenic, ]
+  
+  assign(gsub(".txt", "", files), read_df)
+}
+
+rm(read_df, protein_coding, intergenic, files, filesnames)
+
+CTM_HFDM_Hypo <- CTM_HFDM_Hypo.HOMER_annotated$Entrez.ID
+CTM_HFDM_Hyper <- CTM_HFDM_Hyper.HOMER_annotated$Entrez.ID
+CTF_HFDF_Hypo <- CTF_HFDF_Hypo.HOMER_annotated$Entrez.ID
+CTF_HFDF_Hyper <- CTF_HFDF_Hyper.HOMER_annotated$Entrez.ID
+CTM_CTF_Hypo <- CTM_CTF_Hypo.HOMER_annotated$Entrez.ID
+CTM_CTF_Hyper <- CTM_CTF_Hyper.HOMER_annotated$Entrez.ID
+CT18_CTM_Hypo <- CT18_CTM_Hypo.HOMER_annotated$Entrez.ID
+CT18_CTM_Hyper <- CT18_CTM_Hyper.HOMER_annotated$Entrez.ID
+CT18_CTF_Hypo <- CT18_CTF_Hypo.HOMER_annotated$Entrez.ID
+CT18_CTF_Hyper <- CT18_CTF_Hyper.HOMER_annotated$Entrez.ID
+background_genes <- segmentAnnotation_annotated$Entrez.ID
+
+compare <- list("CTM_HFDM_Hypo" = CTM_HFDM_Hypo,
+                "CTM_HFDM_Hyper" = CTM_HFDM_Hyper, 
+                "CTF_HFDF_Hypo" = CTF_HFDF_Hypo,
+                "CTF_HFDF_Hyper" = CTF_HFDF_Hyper,
+                "CTM_CTF_Hypo" = CTM_CTF_Hypo,
+                "CTM_CTF_Hyper" = CTM_CTF_Hyper,
+                "CT18_CTM_Hypo" = CT18_CTM_Hypo,
+                "CT18_CTM_Hyper" = CT18_CTM_Hyper,
+                "CT18_CTF_Hypo" = CT18_CTF_Hypo,
+                "CT18_CTF_Hyper" = CT18_CTF_Hyper)
+
+for( x in 1:length(compare) )
+{
+  BP <- enrichGO(compare[[x]], OrgDb = org.Rn.eg.db, keyType = "ENTREZID", ont = "BP", pvalueCutoff = 1, qvalueCutoff = 1, universe = as.character(background_genes), pAdjustMethod = "fdr")
+  write.table(BP@result, paste(names(compare)[x], "GO-BP.txt", sep = "_"), quote = FALSE, sep = "\t")
+  assign(paste(names(compare)[x], "BP", sep = "_"), BP)
+}
+rm(BP, x)
+
+```
