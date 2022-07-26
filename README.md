@@ -237,22 +237,13 @@ for( files in filenames )
   
   read_df <- read_df[protein_coding & !intergenic, ]
   
-  assign(gsub(".txt", "", files), read_df)
+  assign(gsub(".HOMER_annotated.txt", "", files), read_df$Entrez.ID)
 }
 
 rm(read_df, protein_coding, intergenic, files, filesnames)
 
-CTM_HFDM_Hypo <- CTM_HFDM_Hypo.HOMER_annotated$Entrez.ID
-CTM_HFDM_Hyper <- CTM_HFDM_Hyper.HOMER_annotated$Entrez.ID
-CTF_HFDF_Hypo <- CTF_HFDF_Hypo.HOMER_annotated$Entrez.ID
-CTF_HFDF_Hyper <- CTF_HFDF_Hyper.HOMER_annotated$Entrez.ID
-CTM_CTF_Hypo <- CTM_CTF_Hypo.HOMER_annotated$Entrez.ID
-CTM_CTF_Hyper <- CTM_CTF_Hyper.HOMER_annotated$Entrez.ID
-CT18_CTM_Hypo <- CT18_CTM_Hypo.HOMER_annotated$Entrez.ID
-CT18_CTM_Hyper <- CT18_CTM_Hyper.HOMER_annotated$Entrez.ID
-CT18_CTF_Hypo <- CT18_CTF_Hypo.HOMER_annotated$Entrez.ID
-CT18_CTF_Hyper <- CT18_CTF_Hyper.HOMER_annotated$Entrez.ID
-background_genes <- segmentAnnotation_annotated$Entrez.ID
+# Annotation de la segmentation de SMART2 = background genes (Entrez.ID des gènes seulement)
+background_genes <- segmentAnnotation_annotated.txt
 
 compare <- list("CTM_HFDM_Hypo" = CTM_HFDM_Hypo,
                 "CTM_HFDM_Hyper" = CTM_HFDM_Hyper, 
@@ -272,5 +263,4 @@ for( x in 1:length(compare) )
   assign(paste(names(compare)[x], "BP", sep = "_"), BP)
 }
 rm(BP, x)
-
 ```
