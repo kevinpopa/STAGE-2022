@@ -225,12 +225,42 @@ Les paramètres de ClusterProfiler sont à modifier à la discrétion de l'analy
 ```r
 library(org.Rn.eg.db)
 library(clusterProfiler)
+library(writexl)
 
 filenames = dir(pattern="*_annotated.txt")
 
-for( files in filenames )
+for(files in filenames)
 {
   read_df <- read.delim(files)
+  names(read_df)[1] = "PEAK_ID"
+  
+  if(grepl("segment", files, ignore.case = TRUE) == TRUE){
+    assign(gsub("_annotated.txt", ".allDMR", files), read_df$Entrez.ID)
+  }else{
+    assign(gsub(".HOMER_annotated.txt", ".allDMR", files), read_df)
+  }
+  
+  LINE <- with(read_df, grepl("LINE", Detailed.Annotation, ignore.case = TRUE))
+  SINE <- with(read_df, grepl("SINE", Detailed.Annotation, ignore.case = TRUE))
+  LTR <- with(read_df, grepl("LTR", Detailed.Annotation, ignore.case = TRUE))
+  Transposable <-
+    with(
+      read_df,
+      grepl("transposable", Gene.Description, ignore.case = TRUE) |
+        grepl("piggy", Detailed.Annotation, ignore.case = TRUE) |
+        grepl("tigger", Detailed.Annotation, ignore.case = TRUE) |
+        grepl("hAT", Detailed.Annotation, ignore.case = FALSE)  
+    )
+  
+  annotation_df.list <- list("LINE" = read_df[LINE, ],
+                             "SINE" = read_df[SINE, ],
+                             "LTR" = read_df[LTR, ],
+                             "piggy, tigger, hAT, etc..." = read_df[Transposable, ])
+  
+  path <- paste("TE", files, sep = "_")
+  path <- gsub(".txt", ".xlsx", path)
+  
+  write_xlsx(annotation_df.list, path = path, col_names = TRUE, format_headers = TRUE)
   
   protein_coding <- with(read_df, grepl("protein-coding", Gene.Type, ignore.case = TRUE))
   intergenic <- with(read_df, grepl("intergenic", Annotation, ignore.case = TRUE))
@@ -240,9 +270,19 @@ for( files in filenames )
   assign(gsub(".HOMER_annotated.txt", "", files), read_df$Entrez.ID)
 }
 
-rm(read_df, protein_coding, intergenic, files, filesnames)
+rm(
+  read_df,
+  protein_coding,
+  intergenic,
+  files,
+  filenames,
+  path,
+  LINE,
+  SINE,
+  LTR,
+  Transposable
+)
 
-# Annotation de la segmentation de SMART2 = background genes (Entrez.ID des gènes seulement)
 background_genes <- segmentAnnotation_annotated.txt
 
 compare <- list("CTM_HFDM_Hypo" = CTM_HFDM_Hypo,
@@ -263,4 +303,29 @@ for( x in 1:length(compare) )
   assign(paste(names(compare)[x], "BP", sep = "_"), BP)
 }
 rm(BP, x)
+
+dotplot(CTM_HFDM_Hypo_BP, title = "Hypométhylation du témoin mâle vs HFD mâle")
+dotplot(CTM_HFDM_Hyper_BP, title = "Hyperméthylation du témoin mâle vs HFD mâle")
+dotplot(CTF_HFDF_Hypo_BP, title = "Hypométhylation du témoin femelle vs HFD femelle")
+dotplot(CTF_HFDF_Hyper_BP, title = "Hyperméthylation du témoin femelle vs HFD femelle")
+dotplot(CTM_CTF_Hypo_BP, title = "Hypométhylation du témoin mâle vs témoin femelle")
+dotplot(CTM_CTF_Hyper_BP, title = "Hyperméthylation du témoin mâle vs témoin femelle")
+dotplot(CT18_CTM_Hypo_BP, title = "Hypométhylation GD16 mâle vs GD18 mâle")
+dotplot(CT18_CTM_Hyper_BP, title = "Hyperméthylation GD16 mâle vs GD18 mâle")
+dotplot(CT18_CTF_Hypo_BP, title = "Hypométhylation GD16 femelle vs GD18 mâle")
+dotplot(CT18_CTF_Hyper_BP, title = "Hyperméthylation GD16 femelle vs GD18 mâle")
+
+max_ln <- max(c(length(CTM_HFDM_Hyper.allDMR$PEAK_ID),
+                 length(CTM_HFDM_Hypo.allDMR$PEAK_ID),
+                 length(CTF_HFDF_Hyper.allDMR$PEAK_ID), 
+                 length(CTF_HFDF_Hypo.allDMR$PEAK_ID)))
+ 
+df = data.frame(col1 = c(CTM_HFDM_Hyper.allDMR$PEAK_ID, rep(NA, max_ln - length(CTM_HFDM_Hyper.allDMR))),
+                 col2 = c(CTM_HFDM_Hypo.allDMR$PEAK_ID, rep(NA, max_ln - length(CTM_HFDM_Hypo.allDMR))),
+                 col3 = c(CTF_HFDF_Hyper.allDMR$PEAK_ID, rep(NA, max_ln - length(CTF_HFDF_Hyper.allDMR))),
+                 col4 = c(CTF_HFDF_Hypo.allDMR$PEAK_ID, rep(NA, max_ln - length(CTF_HFDF_Hypo.allDMR))))
+ 
+colnames(df) <- c("CTM_HFDM_Hyper", "CTM_HFDM_Hypo", "CTF_HFDF_Hyper", "CTF_HFDF_Hypo")
+write_xlsx(df, path = "DMRAll_CTL_HFD1.xlsx", col_names = TRUE, format_headers = TRUE)
+
 ```
