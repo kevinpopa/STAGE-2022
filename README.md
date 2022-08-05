@@ -33,7 +33,7 @@ Lancer SMART2, en supposant que l'environnement virtuel est bien configuré :
 ```bash
 module load StdEnv/2018.3 python/2.7 scipy-stack
 source ~/ENV/bin/activate
-SMART (Matrice) -t DeNovoDMR -o ./(dossier output) -AD 0.10 -PC 1
+SMART ../data_seq/GD16_GD18/matrix/MethylMatrix.txt -t DeNovoDMR -c CCMatrix_seq.txt -o ./SMART2-seq2 -AD 0.10 -PC 1
 ```
 
 Dans ce cas-ci, on suppose que l'environnement virtuel se trouve à la racine pour venir l'activer. L'option -AD est la différence de méthylation moyenne absolue entre le groupe de cas et le groupe de contrôle, ajustée à 10%. L'option -PC est la **p-value** auquels les DMR des case-controls sont identifiés.
